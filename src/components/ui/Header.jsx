@@ -105,10 +105,15 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0.7,
   },
   drawerItemSelected: {
-    opacity: 1,
+    "& .MuiListItemText-root": {
+      opacity: 1,
+    },
   },
   drawerItemEstimate: {
     backgroundColor: theme.palette.common.orange,
+  },
+  appbar: {
+    zIndex: theme.zIndex.modal + 1,
   },
 }));
 
@@ -175,9 +180,16 @@ const Header = (props) => {
 
   const routes = [
     { name: "Home", link: "/", activeIndex: 0 },
-    { name: "Services", link: "/services", activeIndex: 1 },
+    {
+      name: "Services",
+      link: "/services",
+      activeIndex: 1,
+      ariaOwns: anchorEl ? "simple-menu" : undefined,
+      ariaPopUp: anchorEl ? "simple-menu" : undefined,
+      mouseOver: (e) => handleClick(e),
+    },
     { name: "The revolution", link: "/revolution", activeIndex: 2 },
-    { name: "Mobile App Development", link: "/about", activeIndex: 3 },
+    { name: "About Us", link: "/about", activeIndex: 3 },
     { name: "Contact Us", link: "/contact", activeIndex: 4 },
   ];
 
@@ -206,36 +218,26 @@ const Header = (props) => {
         className={classes.tabContainer}
         indicatorColor="primary"
       >
-        <Tab className={classes.tab} component={Link} to="/" label="Home" />
-        <Tab
-          aria-owns={anchorEl ? "simple-menu" : undefined}
-          aria-haspopup={anchorEl ? "simple-menu" : undefined}
-          className={classes.tab}
-          component={Link}
-          to="/services"
-          label="Services"
-          onMouseOver={(e) => handleClick(e)}
-        />
-        <Tab
-          className={classes.tab}
-          component={Link}
-          to="/revolution"
-          label="The Revolution"
-        />
-        <Tab
-          className={classes.tab}
-          component={Link}
-          to="/about"
-          label="About Us"
-        />
-        <Tab
-          className={classes.tab}
-          component={Link}
-          to="/contact"
-          label="Contact Us"
-        />
+        {routes.map((route, i) => (
+          <Tab
+            key={`${route}${i}`}
+            className={classes.tab}
+            component={Link}
+            to={route.link}
+            label={route.name}
+            aria-owns={route.ariaOwns ? route.ariaOwns : undefined}
+            aria-haspopup={route.ariaPopUp ? route.ariaPopUp : undefined}
+            onMouseOver={route.mouseOver ? route.mouseOver : undefined}
+          />
+        ))}
       </Tabs>
-      <Button variant="contained" color="secondary" className={classes.button}>
+      <Button
+        variant="contained"
+        component={Link}
+        to="/estimate"
+        color="secondary"
+        className={classes.button}
+      >
         Free Estimate
       </Button>
       <Menu
@@ -246,10 +248,12 @@ const Header = (props) => {
         onClose={handleClose}
         MenuListProps={{ onMouseLeave: handleClose }}
         elevation={0}
+        style={{ zIndex: 1302 }}
+        keepMounted
       >
         {menuOptions.map((option, i) => (
           <MenuItem
-            key={option.link}
+            key={`${option}${i}`}
             component={Link}
             to={option.link}
             classes={{ root: classes.menuItem }}
@@ -281,117 +285,28 @@ const Header = (props) => {
         }}
         classes={{ paper: classes.drawer }}
       >
+        <div className={classes.toolbarMargin} />
         <List disablePadding>
-          <ListItem
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(0);
-            }}
-            divider
-            button
-            component={Link}
-            to="/"
-            selected={value === 0}
-          >
-            <ListItemText
-              className={
-                value === 0
-                  ? [classes.drawerItem, classes.drawerItemSelected]
-                  : classes.drawerItem
-              }
-              disableTypography
+          {routes.map((route) => (
+            <ListItem
+              key={`${route}${route.activeIndex}`}
+              onClick={() => {
+                setOpenDrawer(false);
+                setValue(route.activeIndex);
+              }}
+              divider
+              button
+              component={Link}
+              to={route.link}
+              selected={value === route.activeIndex}
+              classes={{ selected: classes.drawerItemSelected }}
             >
-              Home
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            onClick={() => {
-              setValue(1);
-              setOpenDrawer(false);
-            }}
-            divider
-            button
-            component={Link}
-            to="/services"
-            selected={value === 1}
-          >
-            <ListItemText
-              className={
-                value === 1
-                  ? [classes.drawerItem, classes.drawerItemSelected]
-                  : classes.drawerItem
-              }
-              disableTypography
-            >
-              Services
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            onClick={() => {
-              setValue(2);
-              setOpenDrawer(false);
-            }}
-            divider
-            button
-            component={Link}
-            to="/revolution"
-            selected={value === 2}
-          >
-            <ListItemText
-              className={
-                value === 2
-                  ? [classes.drawerItem, classes.drawerItemSelected]
-                  : classes.drawerItem
-              }
-              disableTypography
-            >
-              The Revolution
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(3);
-            }}
-            divider
-            button
-            component={Link}
-            to="/about"
-            selected={value === 3}
-          >
-            <ListItemText
-              className={
-                value === 3
-                  ? [classes.drawerItem, classes.drawerItemSelected]
-                  : classes.drawerItem
-              }
-              disableTypography
-            >
-              About Us
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            onClick={() => {
-              setValue(4);
-              setOpenDrawer(false);
-            }}
-            divider
-            button
-            component={Link}
-            to="/contact"
-            selected={value === 4}
-          >
-            <ListItemText
-              className={
-                value === 4
-                  ? [classes.drawerItem, classes.drawerItemSelected]
-                  : classes.drawerItem
-              }
-              disableTypography
-            >
-              Contact Us
-            </ListItemText>
-          </ListItem>
+              <ListItemText className={classes.drawerItem} disableTypography>
+                {route.name}
+              </ListItemText>
+            </ListItem>
+          ))}
+
           <ListItem
             onClick={() => {
               setOpenDrawer(false);
@@ -400,18 +315,14 @@ const Header = (props) => {
             divider
             button
             component={Link}
-            className={classes.drawerItemEstimate}
+            classes={{
+              root: classes.drawerItemEstimate,
+              selected: classes.drawerItemSelected,
+            }}
             to="/estimate"
             selected={value === 5}
           >
-            <ListItemText
-              className={
-                value === 5
-                  ? [classes.drawerItem, classes.drawerItemSelected]
-                  : classes.drawerItem
-              }
-              disableTypography
-            >
+            <ListItemText className={classes.drawerItem} disableTypography>
               Free Estimate
             </ListItemText>
           </ListItem>
@@ -430,7 +341,7 @@ const Header = (props) => {
   return (
     <React.Fragment>
       <ElevationScroll>
-        <AppBar position="fixed" color="primary">
+        <AppBar position="fixed" className={classes.appbar}>
           <ToolBar disableGutters>
             <Button
               disableRipple

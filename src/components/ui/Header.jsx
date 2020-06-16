@@ -117,7 +117,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = (props) => {
+const Header = ({ value, setValue, selectedIndex, setSelectedIndex }) => {
+  // const { value, setValue, selectedIndex, setSelectedIndex } = props;
   const classes = useStyles();
   // for media queries
   const theme = useTheme();
@@ -128,13 +129,9 @@ const Header = (props) => {
   //  drawer state
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  //for Tab Highlighting State
-  const [value, setValue] = useState(0);
   // for Menu State
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
-  //for MenuItem index State
-  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleChange = (e, newIndexvalue) => {
     setValue(newIndexvalue);
@@ -208,7 +205,7 @@ const Header = (props) => {
           break;
       }
     });
-  }, [value, selectedIndex, menuOptions, routes]);
+  }, [value, selectedIndex, setSelectedIndex, setValue, menuOptions, routes]);
 
   const tabs = (
     <React.Fragment>

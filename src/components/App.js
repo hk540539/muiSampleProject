@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./ui/Theme";
+import LandingPage from "./LandingPage";
+
 function App() {
   //for Tab Highlighting State
   const [value, setValue] = useState(0);
@@ -20,12 +22,9 @@ function App() {
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
         />
+
         <Switch>
-          <Route
-            exact
-            path="/"
-            component={() => <div style={{ height: "2000px" }}>Home</div>}
-          />
+          <Route exact path="/" component={LandingPage} />
           <Route exact path="/services" component={() => <div>Sevices</div>} />
           <Route
             exact

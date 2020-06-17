@@ -68,13 +68,13 @@ const serviceRoutes = [
     selectedIndex: 1,
   },
   {
-    name: " Mobile App Development",
+    name: "iOS/Android App Development",
     link: "/mobileapps",
     activeIndex: 1,
     selectedIndex: 2,
   },
   {
-    name: " Website Development",
+    name: "Website Development",
     link: "/websites",
     activeIndex: 1,
     selectedIndex: 3,
@@ -137,6 +137,7 @@ const Footer = ({ setValue, setSelectedIndex }) => {
             <Grid container direction="column" spacing={2}>
               {serviceRoutes.map((route, i) => (
                 <Grid
+                  key={`${route.activeIndex}${i}`}
                   item
                   className={classes.link}
                   component={Link}
@@ -155,6 +156,7 @@ const Footer = ({ setValue, setSelectedIndex }) => {
             <Grid container direction="column" spacing={2}>
               {RevolutionRoutes.map((route, i) => (
                 <Grid
+                  key={`${route.activeIndex}${i}`}
                   item
                   className={classes.link}
                   component={Link}
@@ -170,6 +172,7 @@ const Footer = ({ setValue, setSelectedIndex }) => {
             <Grid container direction="column" spacing={2}>
               {AboutRoutes.map((route, i) => (
                 <Grid
+                  key={`${route.activeIndex}${i}`}
                   item
                   className={classes.link}
                   component={Link}

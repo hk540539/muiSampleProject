@@ -6,11 +6,17 @@ import Button from "@material-ui/core/Button";
 import ButtonArrow from "./ui/ButtonArrow";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import { Link } from "react-router-dom";
 
 import animationData from "../animations/landinganimation/data";
 import customSoftwareIcon from "../assets/Custom Software Icon.svg";
 import mobileIcon from "../assets/mobileIcon.svg";
 import websiteIcon from "../assets/websiteIcon.svg";
+import revolutionBackground from "../assets/repeatingBackground.svg";
+import infoBackground from "../assets/infoBackground.svg";
+import CallToAction from "./ui/CallToAction";
 
 const useStyles = makeStyles((theme) => ({
   animation: {
@@ -87,15 +93,43 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "6em",
     },
   },
+  revolutionBackground: {
+    backgroundImage: `url(${revolutionBackground}) `,
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    height: "100%",
+    width: "100%",
+  },
+  revolutionCard: {
+    position: "absolute",
+    boxShadow: theme.shadows[10],
+    borderRadius: 15,
+    padding: "10em",
+    [theme.breakpoints.down("sm")]: {
+      padding: "8em 0em",
+      borderRadius: 0,
+      width: "100%",
+    },
+  },
+  infoBackground: {
+    backgroundImage: `url(${infoBackground}) `,
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    height: "100%",
+    width: "100%",
+  },
 }));
 
-const LandingPage = () => {
+const LandingPage = ({ setValue, setSelectedIndex }) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
+  const matchesXS = useMediaQuery(theme.breakpoints.down("xs"));
   const defaultOptions = {
     loop: true,
-    autoplay: true,
+    autoplay: false,
     animationData: animationData,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
@@ -117,12 +151,24 @@ const LandingPage = () => {
               className={classes.buttonContainer}
             >
               <Grid item>
-                <Button variant="contained" className={classes.estimateButton}>
+                <Button
+                  variant="contained"
+                  component={Link}
+                  to="/estimate"
+                  className={classes.estimateButton}
+                  onClick={() => setValue(5)}
+                >
                   Free Estimate
                 </Button>
               </Grid>
               <Grid item>
-                <Button variant="outlined" className={classes.learnButtonHero}>
+                <Button
+                  variant="outlined"
+                  className={classes.learnButtonHero}
+                  component={Link}
+                  to="/revolution"
+                  onClick={() => setValue(2)}
+                >
                   <span style={{ marginRight: 10 }}> Learn More</span>
                   <ButtonArrow
                     width={15}
@@ -161,7 +207,16 @@ const LandingPage = () => {
               Complete digital solutions, from investigation to{" "}
               <span className={classes.specialText}>celebration.</span>
             </Typography>
-            <Button variant="outlined" className={classes.learnButton}>
+            <Button
+              variant="outlined"
+              className={classes.learnButton}
+              component={Link}
+              to="/customsoftware"
+              onClick={() => {
+                setValue(1);
+                setSelectedIndex(1);
+              }}
+            >
               <span style={{ marginRight: 10 }}>Learn More</span>
               <ButtonArrow
                 width={15}
@@ -193,7 +248,7 @@ const LandingPage = () => {
               textAlign: matchesSM ? "center" : undefined,
             }}
           >
-            <Typography variant="h4">Android App Development</Typography>
+            <Typography variant="h4">iOS/Android App Development</Typography>
             <Typography variant="subtitle1" className={classes.subtitle}>
               Extend Functionality.Extend Access. Increase Engagement.
             </Typography>
@@ -201,7 +256,16 @@ const LandingPage = () => {
               Integrate your web experience or create a standalone app
               {matchesSM ? null : <br />}with either mobile platform.
             </Typography>
-            <Button variant="outlined" className={classes.learnButton}>
+            <Button
+              variant="outlined"
+              className={classes.learnButton}
+              component={Link}
+              to="/mobileapps"
+              onClick={() => {
+                setValue(1);
+                setSelectedIndex(2);
+              }}
+            >
               <span style={{ marginRight: 10 }}>Learn More</span>
               <ButtonArrow
                 width={15}
@@ -237,7 +301,16 @@ const LandingPage = () => {
             <Typography variant="subtitle1">
               Optimized for Search Engines, built for speed.
             </Typography>
-            <Button variant="outlined" className={classes.learnButton}>
+            <Button
+              variant="outlined"
+              className={classes.learnButton}
+              component={Link}
+              to="/websites"
+              onClick={() => {
+                setValue(1);
+                setSelectedIndex(3);
+              }}
+            >
               <span style={{ marginRight: 10 }}>Learn More</span>
               <ButtonArrow
                 width={15}
@@ -254,6 +327,136 @@ const LandingPage = () => {
             />
           </Grid>
         </Grid>
+      </Grid>
+      <Grid item>
+        {/* --------------Revolution Block---------------- */}
+        <Grid
+          container
+          style={{
+            height: matchesSM ? "50em" : "100em",
+            marginTop: matchesSM ? "6em" : "12em",
+          }}
+          alignItems="center"
+          justify="center"
+        >
+          <Card className={classes.revolutionCard}>
+            <CardContent>
+              <Grid
+                container
+                direction="column"
+                style={{ textAlign: "center" }}
+              >
+                <Grid item>
+                  <Typography variant="h3" gutterBottom>
+                    The Revolution
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="subtitle1">
+                    Visionary insights coupled with cutting-edge technology is a
+                    receipe of revolution.
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    className={classes.learnButtonHero}
+                    component={Link}
+                    to="/revolution"
+                    onClick={() => setValue(2)}
+                  >
+                    <span style={{ marginRight: 10 }}> Learn More</span>
+                    <ButtonArrow
+                      width={15}
+                      height={15}
+                      fill={theme.palette.common.blue}
+                    />
+                  </Button>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+          <div className={classes.revolutionBackground} />
+        </Grid>
+      </Grid>
+      <Grid item>
+        {/* --------------Information Block---------------- */}
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          style={{ height: matchesSM ? "50em" : "80em" }}
+          className={classes.infoBackground}
+        >
+          <Grid
+            container
+            style={{
+              textAlign: matchesXS ? "center" : "inherit",
+            }}
+            direction={matchesSM ? "column" : "row"}
+          >
+            <Grid
+              item
+              sm
+              style={{ marginLeft: matchesXS ? 0 : matchesSM ? "2em" : "5em" }}
+            >
+              <Grid
+                container
+                style={{ marginBottom: matchesXS ? "10em" : 0 }}
+                direction="column"
+              >
+                <Typography variant="h2" style={{ color: "white" }}>
+                  About Us
+                </Typography>
+                <Typography variant="subtitle2">Let's get personal.</Typography>
+                <Grid>
+                  <Button
+                    variant="outlined"
+                    style={{ color: "white", borderColor: "white" }}
+                    className={classes.learnButton}
+                    component={Link}
+                    to="/about"
+                    onClick={() => setValue(3)}
+                  >
+                    <span style={{ marginRight: 10 }}>Learn More</span>
+
+                    <ButtonArrow width={15} height={15} fill="white" />
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid
+              item
+              sm
+              style={{
+                marginRight: matchesXS ? 0 : matchesSM ? "2em" : "5em",
+                textAlign: matchesXS ? "center" : "right",
+              }}
+            >
+              <Grid container direction="column">
+                <Typography variant="h2" style={{ color: "white" }}>
+                  Contact Us
+                </Typography>
+                <Typography variant="subtitle2">Say hello! </Typography>
+                <Grid>
+                  <Button
+                    variant="outlined"
+                    style={{ color: "white", borderColor: "white" }}
+                    className={classes.learnButton}
+                    component={Link}
+                    to="/contact"
+                    onClick={() => setValue(4)}
+                  >
+                    <span style={{ marginRight: 10 }}>Learn More</span>
+                    <ButtonArrow width={10} height={10} fill="white" />
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
+        {/* --------------Call to Action  Block---------------- */}
+        <CallToAction setValue={setValue} setSelectedIndex={setSelectedIndex} />
       </Grid>
     </Grid>
   );

@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./ui/Theme";
 import LandingPage from "./LandingPage";
+import ServicePage from "./ServicePage";
 
 function App() {
   //for Tab Highlighting State
@@ -24,8 +25,28 @@ function App() {
         />
 
         <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/services" component={() => <div>Sevices</div>} />
+          <Route
+            exact
+            path="/"
+            render={(props) => (
+              <LandingPage
+                {...props}
+                setValue={setValue}
+                setSelectedIndex={setSelectedIndex}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/services"
+            render={(props) => (
+              <ServicePage
+                {...props}
+                setValue={setValue}
+                setSelectedIndex={setSelectedIndex}
+              />
+            )}
+          />
           <Route
             exact
             path="/customsoftware"

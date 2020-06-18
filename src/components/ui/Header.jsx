@@ -121,7 +121,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = ({ value, setValue, selectedIndex, setSelectedIndex }) => {
-  // const { value, setValue, selectedIndex, setSelectedIndex } = props;
   const classes = useStyles();
   // for media queries
   const theme = useTheme();
@@ -204,6 +203,9 @@ const Header = ({ value, setValue, selectedIndex, setSelectedIndex }) => {
             }
           }
           break;
+        case "/estimate":
+          setValue(5);
+          break;
         default:
           break;
       }
@@ -237,6 +239,7 @@ const Header = ({ value, setValue, selectedIndex, setSelectedIndex }) => {
         to="/estimate"
         color="secondary"
         className={classes.button}
+        onClick={() => setValue(5)}
       >
         Free Estimate
       </Button>

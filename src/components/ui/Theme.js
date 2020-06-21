@@ -23,6 +23,7 @@ export default createMuiTheme({
       textTransform: "none",
       fontWeight: 700,
       fontSize: "1rem",
+      color: "white",
     },
     estimate: {
       fontFamily: "Pacifico",
@@ -57,6 +58,11 @@ export default createMuiTheme({
       fontWeight: 300,
       fontSize: "1.25rem",
       color: "white",
+    },
+    body2: {
+      fontWeight: 300,
+      fontSize: "1.25rem",
+      color: arcGrey,
     },
     learnButton: {
       borderColor: arcBlue,

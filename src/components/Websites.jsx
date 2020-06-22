@@ -13,7 +13,6 @@ import analytics from "../assets/analytics.svg";
 import seo from "../assets/seo.svg";
 import outreach from "../assets/outreach.svg";
 import ecommerce from "../assets/ecommerce.svg";
-import integrationAnimation from "../animations/integrationAnimation/data.json";
 import CallToAction from "./ui/CallToAction";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,14 +44,6 @@ const CustomSoftware = ({ setValue, setSelectedIndex }) => {
   const matchesMD = useMediaQuery(theme.breakpoints.down("md"));
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const matchesXS = useMediaQuery(theme.breakpoints.down("xs"));
-  const defaultOptions = {
-    loop: true,
-    autoplay: false,
-    animationData: integrationAnimation,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
 
   return (
     <Grid container direction="column">

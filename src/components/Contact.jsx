@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -6,6 +7,10 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Snackbar from "@material-ui/core/Snackbar";
 
 import background from "../assets/background.jpg";
 import mobileBackground from "../assets/mobileBackground.jpg";
@@ -68,11 +73,22 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.secondary.light,
     },
+    [theme.breakpoints.down("sm")]: {
+      height: 40,
+      width: 225,
+    },
   },
 }));
+const initialState = {
+  name: "",
+  email: "",
+  phone: "",
+  message: "",
+};
 const Contact = ({ setValue, setSelectedIndex }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const matchesXS = useMediaQuery(theme.breakpoints.down("xs"));
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const matchesMD = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -86,9 +102,14 @@ const Contact = ({ setValue, setSelectedIndex }) => {
     emailHelper: "",
     phoneHelper: "",
   });
-  //   const handleChange = (e) => {
-  //     setContact({ ...contact, [e.target.id]: e.target.value });
-  //   };
+
+  const [openDialog, setDialog] = useState(false);
+  const [progressLoading, progressSetLoading] = useState(false);
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    backgroundColor: "",
+  });
 
   const handleChange = (e) => {
     let valid;
@@ -120,6 +141,48 @@ const Contact = ({ setValue, setSelectedIndex }) => {
         break;
     }
   };
+
+  const onConfirm = async () => {
+    progressSetLoading(true);
+    try {
+      let response = await axios.get(
+        "https://us-central1-materialui-110c8.cloudfunctions.net/sendMail",
+        {
+          params: {
+            ...contact,
+          },
+        }
+      );
+
+      progressSetLoading(false);
+      setDialog(false);
+      setContact({
+        ...contact,
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+      setAlert({
+        open: true,
+        message: "Message Sent Succesfully",
+        backgroundColor: "#4bb543",
+      });
+    } catch (error) {
+      progressSetLoading(false);
+      setAlert({
+        open: true,
+        message: "Something went wrong,please try again!",
+        backgroundColor: "#ff3232",
+      });
+    }
+  };
+  const buttonContents = (
+    <React.Fragment>
+      Send Message
+      <img src={airplane} alt="paper plane" style={{ marginLeft: "1em" }} />
+    </React.Fragment>
+  );
   return (
     <Grid container direction="row">
       <Grid
@@ -166,7 +229,12 @@ const Contact = ({ setValue, setSelectedIndex }) => {
                   variant="body2"
                   style={{ color: theme.palette.common.blue }}
                 >
-                  +91 91919 91919
+                  <a
+                    style={{ textDecoration: "none", color: "inherit" }}
+                    href="tel:9191991919"
+                  >
+                    +91 91919 91919
+                  </a>
                 </Typography>
               </Grid>
             </Grid>
@@ -187,7 +255,12 @@ const Contact = ({ setValue, setSelectedIndex }) => {
                   variant="body2"
                   style={{ color: theme.palette.common.blue }}
                 >
-                  hk540539@gmail.com
+                  <a
+                    href="mailto:hk540539@gmail.com"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    hk540539@gmail.com
+                  </a>
                 </Typography>
               </Grid>
             </Grid>
@@ -232,10 +305,9 @@ const Contact = ({ setValue, setSelectedIndex }) => {
                 />
               </Grid>
             </Grid>
-            <Grid item>
+            <Grid item style={{ maxWidth: "20em" }}>
               <TextField
                 fullWidth
-                style={{ maxWidth: "20em" }}
                 InputProps={{ disableUnderline: true }}
                 value={contact.message}
                 rows={10}
@@ -246,18 +318,152 @@ const Contact = ({ setValue, setSelectedIndex }) => {
               />
             </Grid>
             <Grid item container justify="center" style={{ marginTop: "2em" }}>
-              <Button variant="contained" className={classes.sendButton}>
-                Send Message
-                <img
-                  src={airplane}
-                  alt="paper plane"
-                  style={{ marginLeft: "1em" }}
-                />
+              <Button
+                variant="contained"
+                className={classes.sendButton}
+                onClick={() => setDialog((prevState) => !prevState)}
+                disabled={
+                  contact.name.length === 0 ||
+                  contact.message.length === 0 ||
+                  contact.email.length === 0 ||
+                  contact.phone.length === 0 ||
+                  helper.emailHelper.length !== 0 ||
+                  helper.phoneHelper.length !== 0
+                }
+              >
+                {buttonContents}
               </Button>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
+      <Dialog
+        style={{ zIndex: 1302 }}
+        open={openDialog}
+        onClose={() => setDialog((prevState) => !prevState)}
+        fullScreen={matchesXS}
+        PaperProps={{
+          style: {
+            paddingTop: matchesXS ? "1em" : "5em ",
+            paddingRight: matchesXS
+              ? 0
+              : matchesSM
+              ? "5em"
+              : matchesMD
+              ? "10em"
+              : "20em",
+            paddingBottom: matchesXS ? "1em" : "5em ",
+            paddingLeft: matchesXS
+              ? 0
+              : matchesSM
+              ? "5em"
+              : matchesMD
+              ? "10em"
+              : "20em",
+          },
+        }}
+      >
+        <DialogContent>
+          <Grid container direction="column">
+            <Grid item>
+              <Typography variant="h4" gutterBottom align="center">
+                Confirm Message
+              </Typography>
+            </Grid>
+            <Grid item style={{ marginBottom: "0.5em" }}>
+              <TextField
+                fullWidth
+                label="Name"
+                id="name"
+                value={contact.name}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item style={{ marginBottom: "0.5em" }}>
+              <TextField
+                fullWidth
+                error={helper.emailHelper.length !== 0}
+                helperText={helper.emailHelper}
+                label="Email"
+                id="email"
+                value={contact.email}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item style={{ marginBottom: "0.5em" }}>
+              <TextField
+                fullWidth
+                error={helper.phoneHelper.length !== 0}
+                helperText={helper.phoneHelper}
+                label="Phone"
+                id="phone"
+                value={contact.phone}
+                onChange={handleChange}
+              />
+            </Grid>
+          </Grid>
+          <Grid item style={{ maxWidth: matchesXS ? "100%" : "20em" }}>
+            <TextField
+              fullWidth
+              InputProps={{ disableUnderline: true }}
+              value={contact.message}
+              rows={10}
+              multiline
+              id="message"
+              onChange={handleChange}
+              className={classes.message}
+            />
+          </Grid>
+          <Grid item>
+            <Grid
+              item
+              container
+              direction={matchesSM ? "column" : "row"}
+              style={{ marginTop: "2em" }}
+              alignItems="center"
+            >
+              <Grid item>
+                <Button
+                  style={{ fontWeight: 300 }}
+                  color="primary"
+                  onClick={() => setDialog((prevState) => !prevState)}
+                >
+                  Cancel
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  className={classes.sendButton}
+                  onClick={onConfirm}
+                  disabled={
+                    contact.name.length === 0 ||
+                    contact.message.length === 0 ||
+                    contact.email.length === 0 ||
+                    contact.phone.length === 0 ||
+                    helper.emailHelper.length !== 0 ||
+                    helper.phoneHelper.length !== 0
+                  }
+                >
+                  {progressLoading ? (
+                    <CircularProgress size={30} />
+                  ) : (
+                    buttonContents
+                  )}
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </DialogContent>
+      </Dialog>
+      <Snackbar
+        open={alert.open}
+        message={alert.message}
+        ContentProps={{ style: { backgroundColor: alert.backgroundColor } }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        onClose={() => setAlert({ ...alert, open: false })}
+        autoHideDuration={4000}
+      />
       <Grid
         container
         item

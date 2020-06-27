@@ -4,6 +4,8 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Avatar from "@material-ui/core/Avatar";
+import CallToAction from "./ui/CallToAction";
+import Hidden from "@material-ui/core/Hidden";
 
 import history from "../assets/history.svg";
 import profile from "../assets/pp.png";
@@ -15,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     fontStyle: "italic",
     fontWeight: 300,
     fontSize: "1.5rem",
-    maxWidth: "50rem",
+    maxWidth: "50em",
     lineHeight: 1.4,
   },
   rowContainer: {
@@ -29,36 +31,58 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     height: "25em",
     width: "25em",
+    [theme.breakpoints.down("sm")]: {
+      height: "20em",
+      width: "20em",
+      maxHeight: 300,
+      maxWidth: 300,
+    },
   },
 }));
 
-const About = () => {
+export default function About({ setValue, setSelectedIndex }) {
   const classes = useStyles();
   const theme = useTheme();
-  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const matchesMD = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
-    <Grid direction="column" container>
-      <Grid item className={classes.rowContainer}>
-        <Typography variant="h2">About Us</Typography>
+    <Grid container direction="column">
+      <Grid
+        item
+        className={classes.rowContainer}
+        style={{ marginTop: matchesMD ? "1em" : "2em" }}
+      >
+        <Typography align={matchesMD ? "center" : undefined} variant="h2">
+          About Us
+        </Typography>
       </Grid>
-      <Grid item container className={classes.rowContainer} justify="center">
+      <Grid
+        item
+        container
+        justify="center"
+        className={classes.rowContainer}
+        style={{ marginTop: "3em" }}
+      >
         <Typography
           variant="h4"
-          className={classes.missionStatement}
           align="center"
+          className={classes.missionStatement}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore,
-          similique! Eos officia possimus ex consectetur iure asperiores! Eum
-          ipsam ducimus rem dolore provident deleniti, facere dicta quam ab nam
-          unde!
+          Whether it be person to person, business to consumer, or an individual
+          to their interests, technology is meant to bring us closer to what we
+          care about in the best way possible. Arc Development will use that
+          principle to provide fast, modern, inexpensive, and aesthetic software
+          to the Midwest and beyond.
         </Typography>
       </Grid>
       <Grid
         item
         container
         className={classes.rowContainer}
-        justify="space-around"
+        style={{ marginTop: "10em", marginBottom: "10em" }}
+        direction={matchesMD ? "column" : "row"}
+        alignItems={matchesMD ? "center" : undefined}
+        justify="space-between"
       >
         <Grid item>
           <Grid
@@ -69,41 +93,72 @@ const About = () => {
             style={{ maxWidth: "35em" }}
           >
             <Grid item>
-              <Typography variant="h4" gutterBottom>
+              <Typography
+                align={matchesMD ? "center" : undefined}
+                variant="h4"
+                gutterBottom
+              >
                 History
               </Typography>
             </Grid>
             <Grid item>
               <Typography
-                variant="body2"
+                variant="body1"
+                align={matchesMD ? "center" : undefined}
                 paragraph
                 style={{ fontWeight: 700, fontStyle: "italic" }}
               >
                 We're the new kid on the block
               </Typography>
-              <Typography variant="body2" paragraph>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab aut
-                eveniet optio, deserunt culpa totam impedit soluta, officiis
-                mollitia rerum, in eum beatae. Odio distinctio dicta fugiat
-                placeat culpa nisi.
+              <Typography
+                variant="body1"
+                align={matchesMD ? "center" : undefined}
+                paragraph
+              >
+                Founded in 2019, weâ€™re ready to get our hands on the worldâ€™s
+                business problems.
               </Typography>
-              <Typography variant="body2" paragraph>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatem praesentium esse laborum, cumque vel ipsa a sunt enim
-                odit, laudantium rerum numquam in earum amet omnis eaque modi
-                distinctio quasi animi quo aut quam sequi nostrum obcaecati?
-                Quis, fugit omnis?
+              <Typography
+                variant="body1"
+                align={matchesMD ? "center" : undefined}
+                paragraph
+              >
+                It all started with one question: Why arenâ€™t all businesses
+                using available technology? There are many different answers to
+                that question: economic barriers, social barriers, educational
+                barriers, and sometimes institutional barriers.
               </Typography>
-              <Typography variant="body2" paragraph>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Consequatur, ad.
+              <Typography
+                variant="body1"
+                align={matchesMD ? "center" : undefined}
+                paragraph
+              >
+                We aim to be a powerful force in overcoming these obstacles.
+                Recent developments in software engineering and computing power,
+                compounded by the proliferation of smart phones, has opened up
+                infinite worlds of possibility. Things that have always been
+                done by hand can now be done digitally and automatically, and
+                completely new methods of interaction are created daily. Taking
+                full advantage of these advancements is the name of the game.
+              </Typography>
+              <Typography
+                variant="body1"
+                align={matchesMD ? "center" : undefined}
+                paragraph
+              >
+                All this change can be a lot to keep up with, and thatâ€™s where
+                we come in.
               </Typography>
             </Grid>
           </Grid>
         </Grid>
         <Grid item>
-          <Grid item lg container justify="center">
-            <img src={history} alt="history" style={{ maxHeight: "22em" }} />
+          <Grid item container justify="center" lg>
+            <img
+              src={history}
+              alt="quill pen sitting on top of book"
+              style={{ maxHeight: matchesMD ? 200 : "22em" }}
+            />
           </Grid>
         </Grid>
       </Grid>
@@ -111,59 +166,101 @@ const About = () => {
         item
         container
         direction="column"
-        className={classes.rowContainer}
         alignItems="center"
+        className={classes.rowContainer}
+        style={{ marginBottom: "15em" }}
       >
         <Grid item>
-          <Typography variant="h4" gutterBottom align="center">
+          <Typography align="center" variant="h4" gutterBottom>
             Team
           </Typography>
         </Grid>
         <Grid item>
-          <Typography variant="body2" paragraph align="center">
-            Hemanth Kumar, MERN Developer
+          <Typography variant="body1" paragraph align="center">
+            Zachary Reece, Founder
           </Typography>
-          <Typography variant="body2" paragraph align="center">
-            I Started coding when i was 13 years old
+          <Typography variant="body1" paragraph align="center">
+            I started coding when I was 9 years old.
           </Typography>
         </Grid>
         <Grid item>
           <Avatar alt="founder" src={profile} className={classes.avatar} />
         </Grid>
-        <Grid item container>
-          <Grid item container direction="column" lg>
+        <Grid item container justify={matchesMD ? "center" : undefined}>
+          <Hidden lgUp>
+            <Grid item lg style={{ maxWidth: "45em", padding: "1.25em" }}>
+              <Typography variant="body1" align="center" paragraph>
+                I taught myself basic coding from a library book in third grade,
+                and ever since then my passion has solely been set on learning
+                â€” learning about computers, learning mathematics and
+                philosophy, studying design, always just learning.
+              </Typography>
+              <Typography variant="body1" align="center" paragraph>
+                Now Iâ€™m ready to apply everything Iâ€™ve learned, and to help
+                others with the intuition I have developed.
+              </Typography>
+            </Grid>
+          </Hidden>
+          <Grid
+            item
+            container
+            direction="column"
+            lg
+            alignItems={matchesMD ? "center" : undefined}
+            style={{ marginBottom: matchesMD ? "2.5em" : 0 }}
+          >
             <Grid item>
-              <img src={yearbook} alt="ffbook" />
+              <img
+                src={yearbook}
+                alt="yearbook page about founder"
+                style={{ maxWidth: matchesMD ? 300 : undefined }}
+              />
             </Grid>
             <Grid item>
-              <Typography variant="caption">A page about me</Typography>
+              <Typography variant="caption">
+                a page from my Sophomore yearbook
+              </Typography>
             </Grid>
           </Grid>
-          <Grid item lg style={{ maxWidth: "45em", padding: "1.25em" }}>
-            <Typography variant="body2" align="center" paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae
-              unde rem odio iste quis explicabo alias tempora omnis doloribus,
-              impedit ipsa quod facilis repellendus? Accusamus doloribus vitae
-              ipsum fugiat ullam.
-            </Typography>
-            <Typography variant="body2" align="center" paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae
-              unde rem odio iste quis explicabo alias tempora omnis doloribus,
-              impedit ipsa quod facilis repellendus.
-            </Typography>
-          </Grid>
-          <Grid item container direction="column" lg alignItems="flex-end">
+          <Hidden mdDown>
+            <Grid item lg style={{ maxWidth: "45em", padding: "1.25em" }}>
+              <Typography variant="body1" align="center" paragraph>
+                I taught myself basic coding from a library book in third grade,
+                and ever since then my passion has solely been set on learning
+                â€” learning about computers, learning mathematics and
+                philosophy, studying design, always just learning.
+              </Typography>
+              <Typography variant="body1" align="center" paragraph>
+                Now Iâ€™m ready to apply everything Iâ€™ve learned, and to help
+                others with the intuition I have developed.
+              </Typography>
+            </Grid>
+          </Hidden>
+          <Grid
+            item
+            container
+            direction="column"
+            lg
+            alignItems={matchesMD ? "center" : "flex-end"}
+          >
             <Grid item>
-              <img src={puppy} alt="pup" />
+              <img
+                src={puppy}
+                alt="grey spotted puppy"
+                style={{ maxWidth: matchesMD ? 300 : undefined }}
+              />
             </Grid>
             <Grid item>
-              <Typography variant="caption">My puppy</Typography>
+              <Typography variant="caption">
+                my miniature dapple dachshund, Sterling
+              </Typography>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
+      <Grid item>
+        <CallToAction setValue={setValue} setSelectedIndex={setSelectedIndex} />
+      </Grid>
     </Grid>
   );
-};
-
-export default About;
+}

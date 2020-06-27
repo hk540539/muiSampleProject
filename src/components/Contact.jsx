@@ -79,12 +79,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const initialState = {
-  name: "",
-  email: "",
-  phone: "",
-  message: "",
-};
+
 const Contact = ({ setValue, setSelectedIndex }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -145,7 +140,7 @@ const Contact = ({ setValue, setSelectedIndex }) => {
   const onConfirm = async () => {
     progressSetLoading(true);
     try {
-      let response = await axios.get(
+      await axios.get(
         "https://us-central1-materialui-110c8.cloudfunctions.net/sendMail",
         {
           params: {
@@ -264,12 +259,7 @@ const Contact = ({ setValue, setSelectedIndex }) => {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid
-              item
-              container
-              direction="column"
-              style={{ maxWidth: "20em" }}
-            >
+            <Grid item container direction="column" style={{ width: "20em" }}>
               <Grid item>
                 <TextField
                   style={{ marginBottom: "0.5em" }}
@@ -305,7 +295,7 @@ const Contact = ({ setValue, setSelectedIndex }) => {
                 />
               </Grid>
             </Grid>
-            <Grid item style={{ maxWidth: "20em" }}>
+            <Grid item style={{ width: "20em" }}>
               <TextField
                 fullWidth
                 InputProps={{ disableUnderline: true }}
@@ -341,7 +331,7 @@ const Contact = ({ setValue, setSelectedIndex }) => {
         style={{ zIndex: 1302 }}
         open={openDialog}
         onClose={() => setDialog((prevState) => !prevState)}
-        fullScreen={matchesXS}
+        fullScreen={matchesSM}
         PaperProps={{
           style: {
             paddingTop: matchesXS ? "1em" : "5em ",
@@ -350,16 +340,16 @@ const Contact = ({ setValue, setSelectedIndex }) => {
               : matchesSM
               ? "5em"
               : matchesMD
-              ? "10em"
-              : "20em",
+              ? "15em"
+              : "25em",
             paddingBottom: matchesXS ? "1em" : "5em ",
             paddingLeft: matchesXS
               ? 0
               : matchesSM
               ? "5em"
               : matchesMD
-              ? "10em"
-              : "20em",
+              ? "15em"
+              : "25em",
           },
         }}
       >
@@ -402,13 +392,14 @@ const Contact = ({ setValue, setSelectedIndex }) => {
               />
             </Grid>
           </Grid>
-          <Grid item style={{ maxWidth: matchesXS ? "100%" : "20em" }}>
+          <Grid item style={{ width: matchesSM ? "100%" : "20em" }}>
             <TextField
               fullWidth
               InputProps={{ disableUnderline: true }}
               value={contact.message}
               rows={10}
               multiline
+              placeholder="Tell us more about your project."
               id="message"
               onChange={handleChange}
               className={classes.message}
